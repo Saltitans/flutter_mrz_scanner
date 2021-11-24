@@ -74,7 +74,6 @@ class MRZController {
         break;
       case 'onParsed':
         final lines = _splitRecognized(call.arguments);
-        print('77 -> $lines');
         if (lines.isNotEmpty) {
           final result = MRZParser.tryParse(lines);
           if (result != null) {
