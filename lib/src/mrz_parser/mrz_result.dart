@@ -1,6 +1,6 @@
 import 'package:flutter_mrz_scanner/src/mrz_parser/mrz_validity.dart';
 
-enum Sex { none, male, female }
+// enum Sex { none, male, female }
 
 class MRZResult {
   const MRZResult({

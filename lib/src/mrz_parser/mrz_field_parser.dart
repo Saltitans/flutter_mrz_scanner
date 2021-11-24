@@ -32,16 +32,16 @@ class MRZFieldParser {
     return _parseDate(formattedInput, 70);
   }
 
-  static Sex parseSex(String input) {
-    switch (input) {
-      case 'M':
-        return Sex.male;
-      case 'F':
-        return Sex.female;
-      default:
-        return Sex.none;
-    }
-  }
+  // static Sex parseSex(String input) {
+  //   switch (input) {
+  //     case 'M':
+  //       return Sex.male;
+  //     case 'F':
+  //       return Sex.female;
+  //     default:
+  //       return Sex.none;
+  //   }
+  // }
 
   static String _formatDate(String input) => _trim(input);
 
