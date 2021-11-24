@@ -100,7 +100,7 @@ class _TD1MRZFormatParser {
         MRZFieldParser.parseDocumentNumber(documentNumberFixed);
     final optionalData = MRZFieldParser.parseOptionalData(optionalDataFixed);
     final birthDate = MRZFieldParser.parseBirthDate(birthDateFixed);
-    final sex = MRZFieldParser.parseSex(sexFixed);
+    final sex = sexFixed;
     final expiryDate = MRZFieldParser.parseExpiryDate(expiryDateFixed);
     final nationality = MRZFieldParser.parseNationality(nationalityFixed);
     final optionalData2 = MRZFieldParser.parseOptionalData(optionalData2Fixed);

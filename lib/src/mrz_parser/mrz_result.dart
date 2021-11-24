@@ -25,7 +25,7 @@ class MRZResult {
   final String documentNumber;
   final String nationalityCountryCode;
   final DateTime birthDate;
-  final Sex sex;
+  final String sex;
   final DateTime expiryDate;
   final String personalNumber;
   final String? personalNumber2;

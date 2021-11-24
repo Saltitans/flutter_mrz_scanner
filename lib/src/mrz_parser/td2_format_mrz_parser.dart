@@ -106,7 +106,7 @@ class _TD2MRZFormatParser {
         MRZFieldParser.parseDocumentNumber(documentNumberFixed);
     final nationality = MRZFieldParser.parseNationality(nationalityFixed);
     final birthDate = MRZFieldParser.parseBirthDate(birthDateFixed);
-    final sex = MRZFieldParser.parseSex(sexFixed);
+    final sex = sexFixed;
     final expiryDate = MRZFieldParser.parseExpiryDate(expiryDateFixed);
     final optionalData = MRZFieldParser.parseOptionalData(optionalDataFixed);
 
@@ -217,7 +217,7 @@ class _TD2MRZFormatParser {
         MRZFieldParser.parseDocumentNumber(documentNumberFixed);
     final nationality = MRZFieldParser.parseNationality(countryCodeFixed);
     final birthDate = MRZFieldParser.parseBirthDate(birthDateFixed);
-    final sex = MRZFieldParser.parseSex(sexFixed);
+    final sex = sexFixed;
     final issueDate = MRZFieldParser.parseExpiryDate('${issueDateFixed}01');
     final yearsValid = issueDate.isBefore(DateTime(2014, 01, 01))
         ? 10
