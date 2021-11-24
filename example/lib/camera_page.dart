@@ -8,7 +8,19 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   bool isParsed = false;
-  MRZController? controller;
+  late MRZController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = MRZController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,30 +29,19 @@ class _CameraPageState extends State<CameraPage> {
         title: const Text('Camera'),
       ),
       body: MRZScanner(
+        controller: controller,
         withOverlay: true,
-        onControllerCreated: onControllerCreated,
-      ),
-    );
-  }
+        onError: print,
+        onParsed: (result) async {
+          if (isParsed) {
+            return;
+          }
+          isParsed = true;
 
-  @override
-  void dispose() {
-    controller?.stopPreview();
-    super.dispose();
-  }
-
-  void onControllerCreated(MRZController controller) {
-    this.controller = controller;
-    controller.onParsed = (result) async {
-      if (isParsed) {
-        return;
-      }
-      isParsed = true;
-
-      await showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-                  content: Column(
+          await showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text('Document type: ${result.documentType}'),
@@ -62,10 +63,11 @@ class _CameraPageState extends State<CameraPage> {
                     },
                   ),
                 ],
-              )));
-    };
-    controller.onError = (error) => print(error);
-
-    controller.startPreview();
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

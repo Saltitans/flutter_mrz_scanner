@@ -10,16 +10,21 @@ import 'package:flutter_mrz_scanner/src/mrz_parser/mrz_result.dart';
 /// MRZ scanner camera widget
 class MRZScanner extends StatelessWidget {
   const MRZScanner({
-    required this.onControllerCreated,
+    required this.controller,
     this.withOverlay = false,
+    required this.onParsed,
+    required this.onError,
     Key? key,
   }) : super(key: key);
 
-  /// Provides a controller for MRZ handling
-  final void Function(MRZController controller) onControllerCreated;
-
-  /// Displays MRZ scanner overlay
+  final MRZController controller;
   final bool withOverlay;
+  final ValueChanged<MRZResult> onParsed;
+  final ValueChanged<String> onError;
+
+  void onPlatformViewCreated(int id) {
+    controller.init(id, onParsed, onError);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,57 +41,44 @@ class MRZScanner extends StatelessWidget {
                 creationParamsCodec: const StandardMessageCodec(),
               )
             : Text('$defaultTargetPlatform is not supported by this plugin');
-    return withOverlay ? CameraOverlay(child: scanner) : scanner;
-  }
 
-  void onPlatformViewCreated(int id) {
-    final controller = MRZController._init(id);
-    onControllerCreated(controller);
+    return withOverlay ? CameraOverlay(child: scanner) : scanner;
   }
 }
 
 class MRZController {
-  MRZController._init(int id) {
+  late final MethodChannel _channel;
+  late final ValueChanged<MRZResult> onParsed;
+  late final ValueChanged<String> onError;
+
+  void init(
+    int id,
+    ValueChanged<MRZResult> onParsed,
+    ValueChanged<String> onError,
+  ) {
     _channel = MethodChannel('mrzscanner_$id');
     _channel.setMethodCallHandler(_platformCallHandler);
+    this.onParsed = onParsed;
+    this.onError = onError;
+    startPreview();
   }
 
-  late final MethodChannel _channel;
-
-  void Function(MRZResult mrz)? onParsed;
-
-  void Function(String text)? onError;
-
-  void flashlightOn() {
-    _channel.invokeMethod<void>('flashlightOn');
-  }
-
-  void flashlightOff() {
-    _channel.invokeMethod<void>('flashlightOff');
-  }
-
-  Future<List<int>?> takePhoto({
-    bool crop = true,
-  }) async {
-    final result = await _channel.invokeMethod<List<int>>('takePhoto', {
-      'crop': crop,
-    });
-    return result;
+  void dispose() {
+    stopPreview();
   }
 
   Future<void> _platformCallHandler(MethodCall call) {
     switch (call.method) {
       case 'onError':
-        onError?.call(call.arguments);
+        onError.call(call.arguments);
         break;
       case 'onParsed':
-        if (onParsed != null) {
-          final lines = _splitRecognized(call.arguments);
-          if (lines.isNotEmpty) {
-            final result = MRZParser.tryParse(lines);
-            if (result != null) {
-              onParsed!(result);
-            }
+        final lines = _splitRecognized(call.arguments);
+        print('77 -> $lines');
+        if (lines.isNotEmpty) {
+          final result = MRZParser.tryParse(lines);
+          if (result != null) {
+            onParsed(result);
           }
         }
         break;
