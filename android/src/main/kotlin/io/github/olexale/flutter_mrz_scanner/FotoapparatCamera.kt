@@ -153,14 +153,17 @@ class FotoapparatCamera constructor(
         val width: Double
         val height: Double
 
-        if (bitmap.height > bitmap.width) {
-            width = bitmap.width * 0.9 // Fill 90% of the width
-            height = width / documentFrameRatio
-        }
-        else {
-            height = bitmap.height * 0.75 // Fill 75% of the height
-            width = height * documentFrameRatio
-        }
+        // if (bitmap.height > bitmap.width) {
+        //      width = bitmap.width * 0.9 // Fill 90% of the width
+        //      height = width / documentFrameRatio
+        // }
+        // else {
+        //     height = bitmap.height * 0.75 // Fill 75% of the height
+        //     width = height * documentFrameRatio
+        // }
+
+        width = bitmap.width * 0.9 // Fill 90% of the width
+        height = width / documentFrameRatio
 
         val mrzZoneOffset = if (cropToMRZ)  height*0.6 else 0.toDouble()
         val topOffset = (bitmap.height - height) / 2 + mrzZoneOffset

@@ -40,7 +40,6 @@ class MRZScannerView internal constructor(context: Context, messenger: BinaryMes
 
     init {
         methodChannel.setMethodCallHandler(this)
-//        cameraView.fotoapparat.start()
     }
 
     override fun dispose() {
