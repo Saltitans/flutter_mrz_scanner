@@ -121,8 +121,9 @@ class FotoapparatCamera constructor(
         baseApi.init(context.cacheDir.absolutePath, "ocrb")
         baseApi.pageSegMode = DEFAULT_PAGE_SEG_MODE
         baseApi.setImage(bitmap)
-        val mrz = baseApi.utF8Text
-        baseApi.end()
+        val mrz = baseApi.getUTF8Text()
+        baseApi.clear()
+        baseApi.recycle()
         return mrz
     }
 
