@@ -35,10 +35,13 @@ class MRZScanner extends StatelessWidget {
             creationParamsCodec: const StandardMessageCodec(),
           )
         : defaultTargetPlatform == TargetPlatform.android
-            ? AndroidView(
-                viewType: 'mrzscanner',
-                onPlatformViewCreated: (int id) => onPlatformViewCreated(id),
-                creationParamsCodec: const StandardMessageCodec(),
+            ? RotatedBox(
+                quarterTurns: -1,
+                child: AndroidView(
+                  viewType: 'mrzscanner',
+                  onPlatformViewCreated: (int id) => onPlatformViewCreated(id),
+                  creationParamsCodec: const StandardMessageCodec(),
+                ),
               )
             : Text('$defaultTargetPlatform is not supported by this plugin');
 
